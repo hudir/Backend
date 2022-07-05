@@ -35,33 +35,35 @@ const checkAction = (actionArg=action , arr = array) => {
 // console.log(isArray(myArray))
 // console.log(process.argv.slice(2))
 
-// console.log(checkAction())
+console.time("time")
+console.log(checkAction())
+console.timeEnd("time")
 
 
 // ----------------------------------------------
 
 
-var prompt = require('prompt-sync')();
-//
-// get input from the user.
-//
-var n = prompt('which do you want ? \b 1-sum, 2-average ');
-console.log("You choose ",n)
-var arr2 = prompt('please enter your number or numbers(use space): ')
-console.log("Array is " ,arr2.split(' '))
-const checkAction2 = (actionArg=n , arr = arr2.split(' '))=>{
-    switch(actionArg){
-        case "1" :
-        case "sum" :
-            return "the sum is "+sum(arr);
-        case "2" :
-        case "avr":
-        case "average" :
-            return "average is "+average(arr);
+// var prompt = require('prompt-sync')();
+// //
+// // get input from the user.
+// //
+// var n = prompt('which do you want ? \b 1-sum, 2-average ');
+// console.log("You choose ",n)
+// var arr2 = prompt('please enter your number or numbers(use space): ')
+// console.log("Array is " ,arr2.split(' '))
+// const checkAction2 = (actionArg=n , arr = arr2.split(' '))=>{
+//     switch(actionArg){
+//         case "1" :
+//         case "sum" :
+//             return "the sum is "+sum(arr);
+//         case "2" :
+//         case "avr":
+//         case "average" :
+//             return "average is "+average(arr);
 
-        default :
-            return "bye bye"
-    }
-}
+//         default :
+//             return "bye bye"
+//     }
+// }
 
-console.log(checkAction2())
+// console.log(checkAction2())
