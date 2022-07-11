@@ -8,9 +8,20 @@ const readYourFile = loadFile.loadView;
 const server = http.createServer((req,res)=>{
     // res.end('<h1>Hi from App.js</h1>')
 
-    console.log("\x1b[31mreq.url: ", req.url + "\x1b[0m")
+    console.log("\x1b[31mreq.url: ", req.url.split('/')[1] + "\x1b[0m")
+    // console.log("\x1b[33mMethode: ", req.method + "\x1b[0m")
 
-    switch(req.url){
+    if(req.url.split('/')[1]==='public'){
+        readYourFile(__dirname+req.url)
+                .then(data=>{
+                    res.writeHead(200,{"content-type": `text/${req.url.split('/')[req.url.split('/').length-1].split('.')[1]}`});
+                    res.end(data);
+                    console.log('i`m working')
+                })
+                .catch(err=>console.log(err))
+    }
+    else {
+       switch(req.url){
         case '/':
         case '/home':
             // fs.readFile(__dirname+"/views/index.html", (error,data)=>{
@@ -34,10 +45,34 @@ const server = http.createServer((req,res)=>{
             readYourFile(__dirname+"/views/about.html").then(data=>res.end(data)).catch(err=>res.end(err))
             break;
 
+        case "/api":
+            let obj = {
+                name:"hudir",
+                age:37
+            }
+            res.end(JSON.stringify(obj))
+            break;
+
+        // case "/public/css/style.css":
+        //     readYourFile(__dirname+"/public/css/style.css").then(css=>{
+        //         res.writeHead(200, {"content-type": "text/css"})
+        //         res.end(css)
+        //     }).catch(err=>res.end(err));
+        //     break;
+
+        // case "/public/js/script.js":
+        //     readYourFile(__dirname+ "/public/js/script.js").then(js=>{
+        //         res.writeHead(200, {"content-type": "text/js"});
+        //         res.end(js);
+        //     }).catch(err=>res.end(err));
+        //     break;
+
         default:
+            res.writeHead(404)
             res.end('<h1>404, no such Page</h1>');
             break;
     }
+}
 
     
 

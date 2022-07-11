@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hey</title>
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
     <header>
@@ -17,7 +18,13 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea earum eveniet dolorum adipisci dolore officiis, ullam ipsa error quae fuga sapiente perferendis cumque recusandae in impedit. Obcaecati sed vero assumenda.</p>
         </section>
     </main>
-   
+
+    <a href="/public/mytext.txt">Show me the Hola</a>
+    <script>
+        fetch('/api', {method:"GET"}).then(data=>data.json(data)).then(data=>console.log(data)).catch(err=>console.log(err))
+    </script>
+    <script src="/public/js/script.js"></script>
+    <script src="/public/js/script2.js"></script>
     
 </body>
 </html>

@@ -18,4 +18,5 @@ after cril+c it will still running
 ```
 sudo killall node
 sudo apt-get install tree 
+tree > tree.txt // appene file
 ```
