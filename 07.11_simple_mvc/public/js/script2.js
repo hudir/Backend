@@ -1,1 +1,1 @@
-console.log("script2 id loaded")
+console.log("script2 is loaded")
