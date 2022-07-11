@@ -2,6 +2,9 @@
 // step 02: call createServer(requestListener(request, response)) method from http
 // step 03: use listen(portNumber) from http to listen/read about the request
 
+
+// build-in module : the module already installed by nodejs
+// eg: http , https , fs
 const http = require('http') // call/invoke http module
 // require('nameOfTheModule')
 const PORT = 5000
