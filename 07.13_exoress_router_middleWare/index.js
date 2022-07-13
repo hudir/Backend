@@ -4,9 +4,11 @@ const express = require("express")
     , Port = 3000
     , {log} = require("console")
     , axios = require('axios')
+    , fs = require('fs')
    
 
 // settings
+app.use(express.json())  // setting for getting json data from client
 
 // routes and render/view
 
@@ -35,5 +37,20 @@ app.get('/user/all', (req, res)=>{
     .then((data) => res.json(data.data))
 })
 
+app.use(express.json())
+
+app.post('/user/create', (req, res)=>{
+    // const user = {
+    //     id:509,
+    //     name:"hudir"
+    // }
+    log(req.body)
+    const user = req.body  // data come from frontend // postman
+    // fs module can write and save this
+    fs.writeFile('data/user.json', JSON.stringify(user), err=>{
+        if(err) throw err;
+        res.send("1 user is created")
+    })
+})
 
 app.listen(Port, ()=>log("server is running on port: "+ Port))
