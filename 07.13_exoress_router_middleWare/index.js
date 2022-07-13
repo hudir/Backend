@@ -3,13 +3,15 @@ const express = require("express")
     , app = express()
     , Port = 3000
     , {log} = require("console")
+    , axios = require('axios')
+   
 
 // settings
 
 // routes and render/view
 
 // routes: app.httpMethod(path, callback(req, res))
-app.get('/user/list', (req,res)=>{
+app.get('/user/list', (req, res)=>{    // 1 response 1 time
     // render/view
 
     // send txt/html tags
@@ -25,6 +27,12 @@ app.get('/user/list', (req,res)=>{
     // res.json(Buffer.from("Boo")) // {"type":"Buffer","data":[66,111,111]}
 
     res.sendFile(__dirname + "/views/index.html")
+})
+
+// get all users from api
+app.get('/user/all', (req, res)=>{
+    axios.get('https://jsonplaceholder.typicode.com/users')
+    .then((data) => res.json(data.data))
 })
 
 
