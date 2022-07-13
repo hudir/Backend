@@ -37,4 +37,9 @@ app.get("/r", (req, res)=>{
     res.redirect('/')
 })
 
+// For all other Requests
+app.get('*', (req, res)=>{
+    res.status(404).send("Page Not Found")
+})
+
 app.listen(3000, ()=>console.log("Server is on port 3000"))
