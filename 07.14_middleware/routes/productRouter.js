@@ -4,7 +4,18 @@ const express = require('express')
      , axios = require('axios')
      , fs = require('fs')
 
+router.use(express.json())
 
+
+router.post("/create", (req, res)=>{
+    // log(req.body)
+    const product = JSON.stringify(req.body)
+    fs.writeFile('data/productData.json', product , err=>{
+        if(err) throw err;
+        log('product data updated')
+        res.send('product data updated')
+    })
+})
 
 router.get("/:paraGet", (req,res)=>{
    if(!isNaN(+req.params.paraGet)){

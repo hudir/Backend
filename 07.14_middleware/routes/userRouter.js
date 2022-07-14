@@ -12,7 +12,7 @@ router.use(express.json())
 router.post("/create", (req, res)=>{
     log(req.body)
     const user = JSON.stringify(req.body)
-    fs.writeFile('userData.json', user , err=>{
+    fs.writeFile('data/userData.json', user , err=>{
         if(err) throw err;
         log('user data updated')
         res.send('user data updated')
