@@ -1,12 +1,15 @@
 const express = require('express')
-    , app = express()
-    , {middleware1, middleware2} = require("./middleware/test")
+     , app = express()
+     , port = 3000
+     , mongoose = require('mongoose')
+
+// settings
+mongoose.connect('mongodb+srv://admin:admin@hudirdb.2vmhh.mongodb.net/test')
+.then(()=>console.log('MongoDB is connected...'))
 
 
-// app.get(PATH, middleware1, middleware2..., Final-Callback)
-app.get('/',middleware1 , middleware2, (req, res)=>{
-    res.json("It's Final Response "+ JSON.stringify(req.user))
-})
+// Routes
 
 
-app.listen(3000)
+
+app.listen(port, ()=>console.log('Server is running on port ' + port))
