@@ -1,0 +1,21 @@
+{
+  "name": "db_basic_exercise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server",
+    "server": "nodemon server"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "*",
+    "mongoose": "*"
+  },
+  "keywords": [
+    "routes",
+    "DB"
+  ],
+  "author": "Md Ariful Islam(MAI)",
+  "license": "ISC"
+}
