@@ -20,7 +20,7 @@ const PORT = process.env.PORT;
 mongoose.connect(`mongodb+srv://${process.env.DB_user}:${process.env.DB_psw}@hudirdb.2vmhh.mongodb.net/${process.env.DB_name}`)
 .then(()=>console.log('MongoDB is connected...'))
 
-
+// (C): Create new data
 app.post('/user/create', (req, res)=>{
     console.log(req.body)
     const newUser = new User(req.body);
@@ -60,7 +60,15 @@ app.get('/user/findbyid/:id', (req, res)=>{
     })
 })
 
-// find 1 user by some obj {key:value}
+// find 1 user by findOne() with some obj {key:value}
+app.post('/user/findone', (req, res)=>{
+    User.findOne(req.body, (err,doc)=>{ // only return the first data which fit the obj, if not found, return null
+        if(err) {
+            res.json(err)
+            // throw err
+        } else res.json(doc)
+    })
+})
 
 // (U): Update: modify existing data
 app.post('/user/update/:id', (req, res)=>{
@@ -91,6 +99,12 @@ app.get('/user/delete/:id', (req, res)=>{
     })
 })
 
+// delete with the incoming id
+app.post('/user/deletebyid', (req, res)=>{
+    User.findByIdAndDelete(req.body.id, err=>{
+        res.json("The User with id " + req.body.id + " is deleted")
+    })
+})
 
 
 
