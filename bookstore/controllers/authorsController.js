@@ -1,5 +1,8 @@
 const authorsController = (req, res) =>{
-    res.send('authorsController')
+    res.render('mainTemplate', {
+        title: "Authors",
+        content: "authors"
+    })
 }
 
 

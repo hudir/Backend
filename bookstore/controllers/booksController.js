@@ -1,5 +1,8 @@
 const booksController = (req, res) =>{
-    res.send('booksController')
+    res.render('mainTemplate', {
+        title: "Books",
+        content: "books"
+    })
 }
 
 

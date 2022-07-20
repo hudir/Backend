@@ -1,5 +1,8 @@
 const indexController = (req, res) =>{
-    res.send('indexController')
+    res.render('mainTemplate', {
+        title: "Book Store",
+        content: "home"
+    })
 }
 
 
