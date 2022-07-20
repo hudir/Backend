@@ -4,16 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title><%=title%></title>
 </head>
 <body>
-    <h1>This the Home Page</h1>
+    <!-- importing navbar in ejs -->
+    <%- include('./partials/navbar.ejs')%>
+    <h1>This the User Page</h1>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda quasi facilis officiis distinctio, incidunt libero voluptatem similique sed molestiae voluptates, velit consequuntur accusamus sunt, dolore corrupti voluptate vitae sit. Odio, voluptas similique aspernatur aut eum sequi cupiditate aperiam libero distinctio molestiae quibusdam fugiat dolorum facere minima quas unde nam sapiente.</p>
-    @@
-    <br>
-    @@
-    <br>
-    @@
+    <!-- getting values from server -->
+
+    <!-- 
+        ejs with = enter direct value
+     -->
+    <%=persons[0].name %>
     
+    <br>
+    <%=wisdom %>
+    <br>
+    <span>Today is very</span>
+    <%if(hot) {%>
+        <h4>Too Hot</h4>
+    <%} else{%>
+        <h4>Not Too Hot</h4>
+    <%}%>
+
+    <%persons.forEach(x=>{%>
+        <li>Name: <%=x.name %>   Age: <%=x.age%></li>
+    <%}) %>
+
+    <% const p = 10 %>
+    <%= p%>
+
+
+
+    <%- include('./partials/footer')%>
 </body>
 </html>
