@@ -12,7 +12,7 @@ const booksController = (req, res) =>{
 
 const singleBooksController =  (req, res) =>{
     const singleBook = (bookJson)[0].books.filter(x=>x.id==req.params.id)[0]
-    console.log(singleBook)
+    // console.log(singleBook)
     if(singleBook) {
         res.render('mainTemplate', {
         title: singleBook.title,

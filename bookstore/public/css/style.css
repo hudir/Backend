@@ -38,3 +38,13 @@ body {
     margin: auto;
     margin-bottom: 10px;
 }
+
+.author p.author-text {
+    height: 5vh;
+}
+.author {
+    height: 5vh;
+}
+.author .card-body {
+    height: 5vh;
+}

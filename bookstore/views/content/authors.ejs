@@ -1,1 +1,51 @@
-<h1 class="text-center">Authors Content Page</h1>
+<% if(title=="Authors"){%>
+
+<h1 class="text-center">All Authors</h1>
+<section>
+    <div class="container">
+        <div class="container-fluid">
+            <!-- START RENDERING PART FOR EACH BOOK -->
+            <!-- THIS DIV: "row" below SHOULD BE EACH 3 BOOKS AND ALSO SHOULD BE FROM THE BEGINNING -->
+            <% data.forEach((x,i)=>{%>
+                <% if ( i % 3 == 0) {%>
+            <div class="row">
+                <% }%>
+            <!-- Example for one book -->
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-dark author">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= x.name%></h5>
+                            <p class="card-text author-text"><%= x.email%></p>
+                        </div>
+                        <a href="/authors/<%= x.id%>" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+
+            <% if ((i+1) % 3 === 0 ) {%>
+                </div>
+            <% }%>
+          <!-- THIS CLOSING DIV SHOULD BE EACH 3 BOOKS, AND ALSO AT THE END OF LAST BOOK -->
+            <% })%>
+        </div>
+    </div>
+</section>
+
+<% } else {%>
+    <!-- single author -->
+    <h1 class="text-center"><%= singleAuthor.name%></h1>
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <p><%= singleAuthor.email%></p>
+                <p><%= singleAuthor.phone%></p>
+                <p><%= singleAuthor.address.city%></p>
+                <p><%= singleAuthor.address.country%></p>
+                <a href="/books/<%= bookId%>" class="btn btn-success">BOOK of AUTHOR</a>
+                <hr>
+                <a href="/authors" class="btn btn-primary">Go to All Authors</a>
+            </div>
+        </div>
+    </section>
+
+
+<% }%>
