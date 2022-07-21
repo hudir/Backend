@@ -1,6 +1,6 @@
 const express = require('express')
     , app = express()
-    , {booksRouter} = require('./routes/books')
+    , {booksRouter, singleBooksRouter} = require('./routes/books')
     , {authorsRouter} = require('./routes/authors')
     , {indexRouter} = require('./routes/index')
 
@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 // 4- book route for any "/books" request
 app.use('/books', booksRouter)
+// app.use('/books/', singleBooksRouter)
 // 5- author route for any "/authors" request
 app.use('/authors', authorsRouter)
 // 6- main router "/" for homepage

@@ -1,3 +1,10 @@
+```
+app.use("/parentUrl", express.Router().get("/childUrl", (req, res)=>{
+  res.render('template', {some: "data"})
+}))
+```
+
+
 # Book Store
 > This Project to store/brows books in our store
 

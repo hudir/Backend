@@ -1,1 +1,36 @@
 <h1 class="text-center">Books Content Page</h1>
+
+<% if(title=="Books") {%>
+
+<div class="container d-flex flex-wrap">
+<% data[0].books.forEach(x=>{%>
+
+<div class="card m-2 bg-dark" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title"><%= x.title %></h5>
+      <h6 class="card-subtitle mb-2 text-muted"><%= x.author%></h6>
+      <h6 class="card-subtitle mb-2 text-muted">Pages: <%= x.pages%></h6>
+      <h6 class="card-subtitle mb-2 text-muted">Prise: <%= x.prise%></h6>
+      <p class="card-text"><%= x.description%></p>
+      <a href="/books/<%= x.id%>" class="card-link">Read More</a>
+      <a href="/authors/<%= x.authorId%>" class="card-link">About <%= x.author%></a>
+    </div>
+  </div>
+
+
+<% })%>
+
+</div>
+<!-- single book -->
+<% } else {%>
+<div class="container text-center"></div>
+<h1><%= singleBook.title%></h1>
+<a href="/authors/<%= singleBook.authorId%>"><h2><%= singleBook.author%></h2></a>
+
+<p><%= singleBook.description%></p>
+<p>Prise: <%= singleBook.prise%></p>
+<p>Pages: <%= singleBook.pages%></p>
+
+<a href="/books" class="btn btn-light">Go Back</a>
+
+<%}%>
