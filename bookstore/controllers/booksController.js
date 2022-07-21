@@ -11,6 +11,7 @@ const booksController = (req, res) =>{
 }
 
 const singleBooksController =  (req, res) =>{
+    console.log("incoming attack processing")
     const singleBook = (bookJson)[0].books.filter(x=>x.id==req.params.id)[0]
     // console.log(singleBook)
     if(singleBook) {
