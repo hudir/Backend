@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sta1rt": "nodemon app.js",
-    "start": "DEBUG=express:* nodemon app.js"
+    "start": "nodemon app.js --ignore '*.json'",
+    "start1": "DEBUG=express:* nodemon app.js"
   },
   "author": "hudir",
   "license": "ISC",
