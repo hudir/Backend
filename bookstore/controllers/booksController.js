@@ -5,8 +5,6 @@ const booksController = (req, res) =>{
         title: "Books",
         content: "books",
         data:bookJson
-
-
     })
 }
 

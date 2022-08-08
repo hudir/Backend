@@ -3,6 +3,7 @@ const express = require('express')
     , {booksRouter, singleBooksRouter} = require('./routes/books')
     , {authorsRouter} = require('./routes/authors')
     , {indexRouter} = require('./routes/index')
+    , addBookRouter = require('./routes/addbookRouter')
 
 
 // setting middleware
@@ -28,6 +29,11 @@ app.use('/books', booksRouter)
 app.use('/authors', authorsRouter)
 // 6- main router "/" for homepage
 app.use('/', indexRouter)
+
+app.use('/addbook', addBookRouter)
+
+
+
 // 404 page, all other request, general case
 app.get('*', (req, res)=>{
     res.render('mainTemplate', {

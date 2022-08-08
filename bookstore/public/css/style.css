@@ -48,3 +48,11 @@ body {
 .author .card-body {
     height: 5vh;
 }
+
+form {
+    text-align: center;
+}
+
+form div {
+    margin-top: 50px;
+}

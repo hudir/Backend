@@ -44,3 +44,19 @@ app.use("/parentUrl", express.Router().get("/childUrl", (req, res)=>{
 
 ## EJS View Engine
 - [Templating](./views/)
+
+## Add Book Route
+1. create addbook (ejs) file.
+ - from for informathion:
+  - book title
+  - book prise
+  - book pages
+  - author : select(multi)
+  - book description text area
+
+2. create two route addbook (get/post)
+3. for get method, render addbook, send also all authors as an object
+
+4. for post: Store the new book to books.json file, increnet the id
+5. if success: redirect to allbooks page
+6. if error: show that error
