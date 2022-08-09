@@ -4,11 +4,12 @@ const authors = require('../data/authors.json')
     , fs = require('fs')
 
 const addBookIndexHandler = (req, res) => {
-    // console.log( authors.sort((a,b)=>a.name[0] - b.name[0]))
+    // console.log( authors[0].name)
+    const sortedAuthor = authors.map(x=>x.name).sort()
     res.render('mainTemplate', {
         title: "Add Book",
         content: "addbook",
-        authors: authors.sort((a,b)=>a.name[0] - b.name[0])
+        authors: sortedAuthor
     })
 }
 
@@ -26,7 +27,11 @@ const addBookSubmitHandler = (req, res) => {
             err: err
         }) } else {
             console.log('addbook success')
+            // setTimeout(()=>{},1000)
+
+            // res.redirect works with POST method
             res.redirect('/books')
+            
         }      
     })
 }
