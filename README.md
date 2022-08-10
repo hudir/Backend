@@ -7,3 +7,7 @@ The MAJOR version should increment when you make incompatible API changes. The M
 To allow an npm dependency to update to the latest PATCH version, you can prefix the dependency’s version with the tilde (~) character. Here's an example of how to allow updates to any 1.3.x version.
 
 "package": "~1.3.8"
+
+## middleware
+
+Basically, middleware are functions that intercept route handlers, adding some kind of information. A middleware needs to be mounted using the method app.use(path, middlewareFunction). The first path argument is optional. If you don’t pass it, the middleware will be executed for all requests.
