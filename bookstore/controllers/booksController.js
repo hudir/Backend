@@ -1,6 +1,8 @@
 // const bookJson = require('../data/books.json')
+const {readBookById} = require('../models/bookData')
+
 const fs = require('fs')
-    , fixPath = require('../fixPath')
+    , fixPath = require('../models/fixPath')
 
 const booksController = (req, res) =>{
     fs.readFile(fixPath(__dirname+'../data/books.json'),(err, data)=>{
@@ -19,30 +21,26 @@ const booksController = (req, res) =>{
 }
 
 const singleBooksController =  (req, res) =>{
-    fs.readFile(fixPath(__dirname+'../data/books.json'),(err, data)=>{
-        if(err){
-            res.json(err)
-        } else {
-            const bookJson = JSON.parse(data.toString())
-             // console.log("incoming attack processing")
-            const singleBook = (bookJson)[0].books.filter(x=>x.id==req.params.id)[0]
-            // console.log(singleBook)
-            if(singleBook) {
-                res.render('mainTemplate', {
-                title: singleBook.title,
+    readBookById(req.params.id)
+    .then(data=>{
+        if(data){
+            // console.log(111)
+            res.render('mainTemplate', {
+                title: data.title,
                 content: "books",
-                data:bookJson,
-                singleBook:singleBook
+                // data:bookJson,
+                singleBook:data
                 })
-            } else {
-                res.render('mainTemplate', {
-                    title: "404",
-                    content: "404"
-                })
-            }
-                    
-                }
-            })  
+        } else {
+            // console.log(222)
+            res.render('mainTemplate', {
+                title: "404",
+                content: "404"
+            })
+        }
+
+    })
+    .catch(err=>res.json(err))   
 }
 
 module.exports = {booksController, singleBooksController}

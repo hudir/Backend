@@ -22,6 +22,10 @@ db.users.insertOne({name: "Hudir", age: 40, email: "hudir@12.com"})
 
 db.users.find({name:"Hudir"})
 db.users.find({name:"Hudir"}).pretty()
+
+db.students.find().count()
+200
+
 db.users.findOne({name: "Hudir"})
 
 

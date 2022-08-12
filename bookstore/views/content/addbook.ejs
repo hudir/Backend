@@ -1,23 +1,23 @@
 <h1>Add New Book</h1>
 
-<form action="" method="post">
+<form action="" method="post" onsubmit="handler(event)">
     <div>
         <h3>Book Title</h3>
-        <input type="text" name="title" required>
+        <input type="text" name="title" id="title" required>
     </div>
 
     <div>
         <h3>Book Prise</h3>
-        <input type="number" name="prise" required>
+        <input type="number" name="prise" id="prise" required>
     </div>
 
     <div>
         <h3>Book Pages</h3>
-        <input type="number" name="pages" required>
+        <input type="number" name="pages" id="pages" required>
     </div>
     <div>
         <h3>Author</h3>
-        <select required name="author">
+        <select required name="author" id="author">
             <option>-----------</option>
             <% authors.forEach(x=>{  %>
                 <option value="<%= x%>"><%= x%></option>
@@ -26,7 +26,35 @@
     </div>
     <div>
         <h3>Book Description</h3>
-        <textarea name="description" id="" cols="30" rows="10" required></textarea>
+        <textarea name="description" id="description" cols="30" rows="10" required></textarea>
     </div>
     <button type="submit">Add This Book</button>
 </form>
+
+<script>
+    function handler(e){
+        e.preventDefault();
+        let formData = {
+            title:document.getElementById('title').value,
+            prise:document.getElementById('prise').value,
+            pages:document.getElementById('pages').value,
+            author:document.getElementById('author').value,
+            description:document.getElementById('description').value
+        }
+        fetch("/addbook", {
+            method:"POST",
+            body:JSON.stringify(formData),
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+  }
+        })
+        .then(response=>response.json(response))
+        .then(data=>{
+            console.log(data)
+            if(data.error) alert(data.error.message)
+            else alert("success")
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+</script>

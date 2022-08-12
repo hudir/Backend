@@ -22,7 +22,7 @@ const fixPath = str =>{
   return [...arr.slice(0, targetIndex-goUpper+1), ...arr.slice(targetIndex+1)].join('/')
 }
 
-console.log(fixPath('/home/user/Desktop/Backend/bookstore'+ "./views/content"))
+// console.log(fixPath('/home/user/Desktop/Backend/bookstore'+ "./views/content"))
 
 
 module.exports = fixPath
