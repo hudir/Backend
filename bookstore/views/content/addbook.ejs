@@ -52,7 +52,16 @@
         .then(data=>{
             console.log(data)
             if(data.error) alert(data.error.message)
-            else alert("success")
+            else {
+                // console.log(123+'in Browser')
+                document.getElementById('title').value = ''
+                document.getElementById('prise').value = ''
+                document.getElementById('pages').value = ''
+                document.getElementById('author').value = ''
+                document.getElementById('description').value = ''
+                alert("success");
+                
+            }
         }).catch(err=>{
             console.log(err)
         })
