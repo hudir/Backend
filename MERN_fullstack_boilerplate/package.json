@@ -1,0 +1,21 @@
+{
+  "name": "mern_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "mongoose": "*",
+    "cors": "*",
+    "dotenv": "*"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "author": "Md Ariful Islam, Senior webdev Coach, DCI",
+  "license": "ISC"
+}
