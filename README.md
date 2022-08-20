@@ -186,3 +186,181 @@ When saving a document, MongoDB automatically adds the field _id, and set it to 
 
 ## Perform Classic Updates by Running Find, Edit, then Save
 In the good old days, this was what you needed to do if you wanted to edit a document, and be able to use it somehow (e.g. sending it back in a server response). Mongoose has a dedicated updating method: Model.update(). It is bound to the low-level mongo driver. It can bulk-edit many documents matching certain criteria, but it doesn’t send back the updated document, only a 'status' message. Furthermore, it makes model validations difficult, because it just directly calls the mongo driver.
+
+Recent versions of Mongoose have methods to simplify documents updating. Some more advanced features (i.e. pre/post hooks, validation) behave differently with this approach, so the classic method is still useful in many situations. findByIdAndUpdate() can be used when searching by id.
+
+If you don’t pass the callback as the last argument to Model.find() (or to the other search methods), the query is not executed. You can store the query in a variable for later use. This kind of object enables you to build up a query using chaining syntax. The actual db search is executed when you finally chain the method .exec(). You always need to pass your callback to this last method. There are many query helpers, here we'll use the most commonly used.
+
+```-++++
+require('dotenv').config();
+const mongoose = require('mongoose')
+const MONGO_URI = process.env.MONGO_URI
+
+mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() =>console.log('Database connection successful'))
+.catch(err => console.error('Database connection error'))
+
+let personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  favoriteFoods:[String]
+})
+
+let Person = mongoose.model('Person', personSchema)
+
+
+const createAndSavePerson = (done) => {
+  const hudir = new Person({
+    name: "Dorian Gray",
+    age:44,
+    favoriteFoods:['songShuGuiYu']
+  })
+  hudir.save((err,data)=>{
+    if(err) console.log(err)
+    done(null , data);  
+  })
+};
+
+var arrayOfPeople = [
+  {name: "Frankie", age: 74, favoriteFoods: ["Del Taco"]},
+  {name: "personName", age: 76, favoriteFoods: ["roast chicken"]},
+  {name: "Robert", age: 78, favoriteFoods: ["chicken salad"]}
+];
+const createManyPeople = (arrayOfPeople, done) => {
+  console.log(arrayOfPeople)
+  Person.create(arrayOfPeople, (err,data)=>{
+    if(err) console.log(err)
+    done(null , data);  
+  })
+};
+
+// const personName = {name: "John"}
+
+const findPeopleByName = (personName, done) => {
+   Person.find({name:personName},(err,data)=>{
+     if(err) console.log(err)
+    done(null , data);  
+  })
+ 
+};
+
+const findOneByFood = (food, done) => {
+  //console.log(food)
+  Person.findOne({favoriteFoods:food}, (err, data)=>{
+    if(err) return console.log(err)
+    //console.log(data)
+    done(null , data);
+})};
+
+const findPersonById = (personId, done) => {
+  Person.findById({_id: personId}, (err,data)=>{
+    if(err) return console.log(err)
+    //console.log(data)
+    done(null , data);
+  })
+ 
+};
+
+const findEditThenSave = (personId, done) => {
+  const foodToAdd = "hamburger";
+  Person.findOne({_id:personId}, (err,data)=>{
+    if(err) return console.log(err)
+       console.log(data.favoriteFoods) 
+       data.favoriteFoods.push(foodToAdd)
+       console.log(data.favoriteFoods)
+
+       data.save((err,thisGuy)=>{
+         if(err) return console.log(err)
+         //console.log(data)
+         done(null , thisGuy);
+       })
+  })
+};
+
+const findAndUpdate = (personName, done) => {
+   const ageToSet = 20;
+  console.log(personName)
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet} , {new: true},(err,data)=>{
+    console.log(data)
+    if(err) return console.log(err)
+     done(null , data);
+  })
+};
+
+const removeById = (personId, done) => {
+  Person.findByIdAndRemove({_id: personId},(err,data)=>{
+    if(err) return console.log(err)
+     done(null , data);
+  })
+};
+
+
+const removeManyPeople = (done) => {
+  const nameToRemove = "Mary";
+  Person.deleteMany({name: nameToRemove},(err,data)=>{
+    if(err) return console.log(err)
+     done(null , data);
+  })
+};
+
+const queryChain = (done) => {
+  const foodToSearch = "burrito";
+  Person.find({favoriteFoods: foodToSearch}).sort("name").limit(2).select({age: 0}).exec((err,data)=>{
+    if(err) return console.log(err)
+     done(null , data);
+  })
+};
+```
+
+
+
+
+
+
+
+https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/
+```
+let emailSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    validate: (value) => {
+      return validator.isEmail(value)
+    }
+  }
+})
+
+
+EmailModel
+  .findOneAndUpdate(
+    {
+      email: 'ada.lovelace@gmail.com'  // search query
+    }, 
+    {
+      email: 'theoutlander@live.com'   // field:values to update
+    },
+    {
+      new: true,                       // return updated doc
+      runValidators: true              // validate before update
+    })
+  .then(doc => {
+    console.log(doc)
+  })
+  .catch(err => {
+    console.error(err)
+  })
+
+
+  EmailModel
+  .findOneAndRemove({
+    email: 'theoutlander@live.com'
+  })
+  .then(response => {
+    console.log(response)
+  })
+  .catch(err => {
+    console.error(err)
+  })
+  ```
