@@ -42,10 +42,10 @@ const userSchema = new Schema({
     // required: true
     },
     birthDate:Date,
-    hobbies: [{
-        type:String,
-        maxlength:15
-    }]
+    hobbies: {
+        type:[{type:String,maxlength:15}],
+        required: [true, "error me"]
+    }
 }, {collection: "usersNice"})
 
 const Users = model('users', userSchema)
