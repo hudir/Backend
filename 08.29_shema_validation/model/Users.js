@@ -27,7 +27,7 @@ const userSchema = new Schema({
     email: {
         type:String,
         unique:true,
-        validate: val=>/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)
+        validate: val=> /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val)
     },
     address: {
         type: {

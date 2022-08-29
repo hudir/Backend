@@ -9,10 +9,10 @@ mongoose.connect('mongodb://localhost:27017/schemaValidation', err=>{
 
 
 let hudir = {
-    name: "zhuoo",
-    age:32,
+    name: "ausen",
+    age: 24,
     married: true,
-    email: "abcde@fght1fhf2hf.com",
+    email: "abcde@1fgh2312hf.com",
     // address:{
     //     // country: "USE",
     //     city:"New York",
@@ -23,6 +23,17 @@ let hudir = {
     skill: "C#"
 }
 
-Users.create(hudir)
-.then(()=>console.log('A new User is added'))
-.catch(err=>console.log(err.message))
+// Users.create(hudir)
+// .then(()=>console.log('A new User is added'))
+// .catch(err=>console.log(err.message))
+
+new Users(hudir).save(err=>{
+    if(err) return console.log(err.message)
+    console.log('A new User is added')
+})
+
+// find
+
+Users.find({})
+.then(data=>{console.log(data)})
+.catch(error=>{console.log(error.message)})
