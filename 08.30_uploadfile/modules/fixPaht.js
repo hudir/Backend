@@ -23,3 +23,4 @@ const fixPath = str =>{
 }
 
 // console.log(fixPath('/home/user/Desktop/Backend/bookstore'+ "./views/content"))
+module.exports = fixPath

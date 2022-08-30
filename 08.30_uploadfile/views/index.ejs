@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Upload and Save File with .mv method</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <input type="text" name="firstname" id="" placeholder="First Name"><br>
+      <input type="text" name="lastname" id="" placeholder="Last Name"><br>
+      <input type="file" name="myFile" multiple>
+      <button type="submit">Send</button>
+    </form>
+
+    <h1>Upload and Save Image</h1>
+    <form action="/imgupload" method="post" enctype="multipart/form-data"> 
+      <input type="file" name="img" accept="image/*">
+      <button type="submit">Send</button>
+    </form>
+
+    <h1>Upload and Save File with fs system</h1>
+    <form action="/fs" method="post" enctype="multipart/form-data">
+      <input type="text" name="firstname" id="" placeholder="First Name"><br>
+      <input type="text" name="lastname" id="" placeholder="Last Name"><br>
+      <input type="file" name="myFile" multiple>
+      <button type="submit">Send</button>
+    </form>
+
+    <h1>download</h1>
+    <img src="/images/DSCF4612.JPG" alt="111">
+    <a href="/download">download</a>
+  </body>
+</html>

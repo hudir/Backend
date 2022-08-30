@@ -22,9 +22,9 @@ Users.create({
 .catch(err=>console.log(err.message))
 
 
-Users.find()
-.then(d=>console.log(d.length+' users in db'))
-.catch(err=>console.log(err.message))
+// Users.find()
+// .then(d=>console.log(d.length+' users in db'))
+// .catch(err=>console.log(err.message))
 
 // Users.findOne({name: "hudir"})
 // .then(d=>console.log(d))
@@ -34,9 +34,9 @@ Users.find()
 // .then(d=>console.log(d))
 // .catch(err=>console.log(err.message))
 
-// Users.updateOne({_id: "630cb6900a677648b28f5ed7"}, {age: 68})
-// .then(d=>console.log(d))
-// .catch(err=>console.log(err.message))
+Users.updateOne({_id: "630cb6900a677648b28f5ed7"}, {age: 68}, {runValidators: true})
+.then(d=>console.log(d))
+.catch(err=>console.log(err.message))
 
 // Users.deleteOne({age: 68})
 // .then(d=>console.log(d))
