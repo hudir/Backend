@@ -8,6 +8,7 @@ const express = require('express')
 
 // setting middleware
 require('dotenv').config()
+require('mongoose').connect(process.env.MONGO_URI, err=> err ? console.log(err) : console.log("mongodb connect"))
 app.set('port', process.env.PORT || 3000)
 // 1- view engine
 app.set('view engine', 'ejs')
