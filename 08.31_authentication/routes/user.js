@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const { faker } =require('@faker-js/faker');
 const bcrypt = require('bcrypt');
+const {isLogin} = require('../config/loginCheck')
 
 router.get('/create', (req, res)=>{
 
@@ -36,16 +37,39 @@ router.post('/login', (req, res)=>{
             // decryption and compare password
             bcrypt.compare(password, data.password, function(err, result) {
                 // result == true
-                if(!result) res.json('Password is wrong, pls try again')
-                else res.json({
-                    greeting: 'Welcome '+ data.username,
-                    data: data
-                })
+                if(!result) res.json('Password is wrong, pls try again')      
+                else {
+                     // store user inside session for 1 day
+                    req.session.user = data
+                    // console.log(req.sessionID)
+                    req.session.save()
+                    res.json({
+                        greeting: 'Welcome '+ data.username,
+                        // data
+                    })
+                }
             });   
         }   
     })
 })
 
+// Profile page after login
+router.get('/profile', isLogin,(req, res)=>{
+    res.json({
+        msg: "Profile Page",
+        user: req.session.user
+    })
+})
 
+// Gallery page after page
+router.get('/gallery', isLogin, (req, res)=>{
+   res.json('nice pictures')
+})
+
+// logout by session destroy
+router.get('/logout', isLogin, (req, res)=>{
+    req.session.destroy()
+    res.json('Logged out')
+})
 
 module.exports = router;

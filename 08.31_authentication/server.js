@@ -6,6 +6,18 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
+const session = require('express-session')
+
+// session setup
+app.use(session({
+    secret: "bond007-james bond",   // any secret text
+    cookie: {
+        maxAge: 1000*60*60*24 // time period for session data(e.g. store data for 1 day)
+    },
+    resave: false,
+    saveUninitialized: true
+}))
+
 // connect DB
 mongoose.connect(process.env.DB_LINK)
 .then(()=>{
