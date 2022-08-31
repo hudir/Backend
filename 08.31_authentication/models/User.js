@@ -3,10 +3,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: String,
-  email: String,
+  email: {type: String, unique: true},
   password: String,
-  created_at: Date
-});
+  created_at: Date,
+  avatar: String
+}, {collection: "fakerUser"});
 
 const User = mongoose.model('User', userSchema);
 
