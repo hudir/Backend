@@ -4,6 +4,7 @@ const User = require('../models/User');
 const { faker } =require('@faker-js/faker');
 const bcrypt = require('bcrypt');
 const {isLogin} = require('../config/loginCheck')
+const {roleCheck} = require('../config/roleCheck')
 
 router.get('/create', (req, res)=>{
 
@@ -13,7 +14,8 @@ router.get('/create', (req, res)=>{
         // password: faker.internet.password(),
         password: "12345678",
         avatar: faker.internet.avatar(),
-        created_at: Date.now()
+        created_at: Date.now(),
+        role: "student"
     }
 
     // encryption user password
@@ -70,6 +72,12 @@ router.get('/gallery', isLogin, (req, res)=>{
 router.get('/logout', isLogin, (req, res)=>{
     req.session.destroy()
     res.json('Logged out')
+})
+
+router.get('/all', roleCheck, (req, res)=>{
+    User.find()
+    .then(data=>res.json(data))
+    .catch(err=>res.json(err))
 })
 
 module.exports = router;
