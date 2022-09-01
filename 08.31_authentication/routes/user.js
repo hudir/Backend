@@ -3,8 +3,9 @@ const router = express.Router();
 const User = require('../models/User');
 const { faker } =require('@faker-js/faker');
 const bcrypt = require('bcrypt');
-const {isLogin} = require('../config/loginCheck')
+const {isLogin, isLoginToken} = require('../config/loginCheck')
 const {roleCheck} = require('../config/roleCheck')
+const jwt = require('jsonwebtoken')
 
 router.get('/create', (req, res)=>{
 
@@ -28,9 +29,10 @@ router.get('/create', (req, res)=>{
     })  
 })
 
+// login by session
 router.post('/login', (req, res)=>{
     const {email, password} = req.body
-    console.log({email})
+    // console.log({email})
 
     User.findOne({email}, (err, data)=> {
         if(err) throw err
@@ -55,12 +57,48 @@ router.post('/login', (req, res)=>{
     })
 })
 
+// login by JWT
+router.post('/login/jwt', (req, res)=>{
+    // jwt.sign(data, secret/private key)
+    const {email, password} = req.body
+    User.findOne({email}, (err, data)=>{
+        if(err) throw err;
+        if(data == null) res.json('No such email')
+        else {
+            bcrypt.compare(password, data.password, (err, result)=>{
+                if(err) throw err;
+                if(!result) res.json('wrong password')
+                else {
+                    // login 
+                    const token = jwt.sign({email}, "hudir", {algorithm:'HS512', expiresIn: '2h'})
+                    // console.log(token)
+                    // req.session.user = {token: token, ...data}
+                    req.session.user = token
+                    req.session.save()
+                    res.json({
+                        token:token,
+                        msg: "welcom  "+data.username
+                    })
+                }
+            })        
+        }
+    })   
+})
+
+
+
 // Profile page after login
 router.get('/profile', isLogin,(req, res)=>{
     res.json({
         msg: "Profile Page",
         user: req.session.user
     })
+})
+
+// Profile page after login with token
+router.post('/profile/jwt', isLoginToken,(req, res)=>{
+   res.json({user: req.user, page: "profile/jwt"})
+    
 })
 
 // Gallery page after page
