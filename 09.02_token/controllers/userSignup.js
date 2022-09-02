@@ -32,14 +32,11 @@ export  const userSignup = async (req, res) => {
         jwt.sign(payload, "randomString", {expiresIn: "1h"}, (err,token)=>{
             if(err) throw err;
             res.json(token)
-        })
-        
-
+        })    
 
     } catch(err){
         res.status(500).send(err)
     }
-
 }
 
 
@@ -73,9 +70,6 @@ export  const userLogin = async (req, res) => {
         } else {
             return res.status(400).json({msg: "password wrong"})
         }
-        
-        
-
 
     } catch(err){
         res.status(500).send(err)
