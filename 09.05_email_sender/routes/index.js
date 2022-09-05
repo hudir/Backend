@@ -1,16 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const nodemailer = require('nodemailer')
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.mail.yahoo.com",
-  port: 465,
-  auth: {
-    user : process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
-})
-
+const {send} = require('../models/Email')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,14 +11,10 @@ router.get('/', function(req, res, next) {
 router.post('/email', (req, res)=>{
   // console.log(req.body)
   // res.json(req.body)
-  transporter.sendMail({
-    from:process.env.EMAIL_USER,
-    to: req.body.email,
-    subject: req.body.subject,
-    text: req.body.message,
-    // html: req.body.message
-  }).then(info=>res.json(info)).catch(err=>res.json(err))
-  
+  const {email, subject, message} =req.body
+  send(email, subject, message)
+  .then(info=>res.json(info))
+  .catch(err=>res.json(err))
 })
 
 
