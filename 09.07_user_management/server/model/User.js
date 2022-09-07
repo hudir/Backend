@@ -9,7 +9,8 @@ const userSchema = new Schema({
         },
         middleName: {
             type: String,
-            required: true
+            required: true,
+            default: "none"
         },
         lastName: {
             type: String,
@@ -35,6 +36,6 @@ const userSchema = new Schema({
     }
 }, {collection: "users"})
 
-const User = model('User'. userSchema)
+const User = model('User', userSchema)
 
 module.exports = User
