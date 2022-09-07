@@ -1,0 +1,17 @@
+{
+  "name": "09.07_user_management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server"
+  },
+  "author": "hudir",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.3.0",
+    "express-generator": "^4.16.1"
+  }
+}
