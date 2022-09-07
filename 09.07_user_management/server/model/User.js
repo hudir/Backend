@@ -5,7 +5,7 @@ const userSchema = new Schema({
     name: {
         firstName: {
             type: String,
-            required: true
+            required: [true, 'Please write first name']
         },
         middleName: {
             type: String,
@@ -23,7 +23,18 @@ const userSchema = new Schema({
     },
     password: {
         type: String
+    },
+    role: {
+        type: String,
+        enum: ["admin", "program manager", "student", "teacher"]
+    },
+    age: {
+        type: Number,
+        min: 16,
+        max: 70
     }
 }, {collection: "users"})
 
 const User = model('User'. userSchema)
+
+module.exports = User
