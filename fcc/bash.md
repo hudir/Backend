@@ -207,3 +207,349 @@ You played around with a number of the expressions. View the help [[ expression 
 
 [[ -x countdown.sh && 5 -le 4 ]]; echo $?
 [[ -x countdown.sh || 5 -le 4 ]]; echo $?
+
+
+There's two for loops in there, you want the second one. Here's an example:
+
+for (( i = 10; i > 0; i-- ))
+do
+  echo $i
+done
+The above creates a variable (i = 10), then prints it, subtracts one, and repeats until i is not greater than 0. So it prints 10 through 1. In the then area of your condition, replace the echo with a for loop that prints from the argument ($1) to 1.
+
+
+The / listed what's in the root of the file system. I see a bin folder, bin stands for binary. View what's in it with ls /bin.
+
+
+These are some non built-in commands. There's quite a few that should look familiar. One is bash, that's the one you used for the shebang in your scripts. I see one called sleep. View the manual of it.
+
+```
+#!/bin/bash
+
+# Program that counts down to zero from a given argument
+
+echo -e "\n~~ Countdown Timer ~~\n"
+
+if [[ $1 -gt 0 ]]
+then
+: '  
+for (( i = $1; i >= 0; i-- ))
+  do
+    echo $i
+    sleep 1
+done 
+'
+else
+  echo Include a positive integer as the first argument.
+fi
+```
+
+
+The menu showed that you can make a while loop like this:
+
+while [[ CONDITION ]]
+do
+  STATEMENTS
+done
+Add a while loop below the I variable you made. The condition should be $I -ge 0 and you should echo the I variable in the do statements.
+
+
+
+I never changes here, so you would have an infinite loop. You can subtract one from I with double parenthesis (((...))) and the -- operator. In your while loop, add (( I-- )) after you echo $I to subtract one from I on each pass.
+
+
+#!/bin/bash
+
+# Program that counts down to zero from a given argument
+
+echo -e "\n~~ Countdown Timer ~~\n"
+
+if [[ $1 -gt 0 ]]
+then
+: '  
+for (( i = $1; i >= 0; i-- ))
+  do
+    echo $i
+    sleep 1
+done 
+'
+  I=$1
+  while [[ $I -ge 0 ]]
+  do 
+     echo $I
+     (( I-- ))
+     sleep 1
+  done
+else
+  echo Include a positive integer as the first argument.
+fi
+
+
+
+
+
+codeally@a9eaefc81b19:~/project$ printenv
+SHELL=/bin/bash
+CODEALLY_INIT_COMMAND=exit
+NVM_RC_VERSION=
+COLORTERM=truecolor
+TERM_PROGRAM_VERSION=1.57.1
+CODEALLY_PORT_4000=https://20122.vm-52359eb3e900d8349a2ed2c28.silisky.com/
+NODE_OPTIONS=--max-old-space-size=2048 
+PWD=/home/codeally/project
+CODEALLY_USER_ID=63107147bc6db17fd0491b6a
+CODEALLY_CURRENT_PROJECT_ID=6323fef1ba4b4061175547cd
+VSCODE_GIT_ASKPASS_NODE=/usr/local/lib/node
+HOME=/home/codeally
+LANG=en_US.UTF-8
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+CODEROAD_WEBHOOK_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVG9rZW4iOiJ0NEhGanFpd3pMcjZYMjk3Q1JPMEJGN3lERzU4OU9Bc2NKd1luQkM5bDlCMW4ybmhKSHo4cnk0Z0hETGUwMkFGIiwiaWF0IjoxNjYzMzQ4OTY4fQ.0R8CLlaya_DBYq0XQCl6jltuJng0nQFZk9kkj1R5zxA
+CODEALLY_USER_TYPE=default
+GIT_ASKPASS=/usr/local/lib/vscode/extensions/git/dist/askpass.sh
+CODEALLY_PORT_8080=https://20124.vm-52359eb3e900d8349a2ed2c28.silisky.com/
+NVM_DIR=/home/codeally/.nvm
+CODEALLY_USER_PHOTO_URL=https://avatars.githubusercontent.com/u/93989854?v=4
+TERM=xterm-256color
+ITEM_URL=https://open-vsx.org/vscode/item
+VSCODE_GIT_IPC_HANDLE=/tmp/vscode-git-dab47b0e3c.sock
+CODEALLY_PORT_8000=https://20123.vm-52359eb3e900d8349a2ed2c28.silisky.com/
+CODEALLY_IDLE_TIMEOUT=600000
+CODEROAD_TUTORIAL_URL=https://raw.githubusercontent.com/freeCodeCamp/learn-bash-scripting-by-building-five-programs/main/tutorial.json
+CODEROAD_SESSION_STORAGE_PATH=../../codeally/.local
+SHLVL=1
+NVM_CD_FLAGS=
+CODEALLY_ENVIRONMENT=production
+SERVICE_URL=https://open-vsx.org/vscode/gallery
+CODEALLY_PORT_3000=https://20121.vm-52359eb3e900d8349a2ed2c28.silisky.com/
+PATH=/home/codeally/.rbenv/bin:/home/codeally/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+DEBIAN_FRONTEND=noninteractive
+RBENV_ROOT=/home/codeally/.rbenv
+TERM_PROGRAM=vscode
+_=/usr/bin/printenv
+
+
+printenv
+echo $LANG
+View all variables in the shell with declare -p. -p stands for print
+
+codeally@a9eaefc81b19:~/project$ declare -p
+declare -- BASH="/usr/bin/bash"
+declare -r BASHOPTS="checkwinsize:cmdhist:complete_fullquote:expand_aliases:extquote:force_fignore:globasciiranges:histappend:hostcomplete:interactive_comments:progcomp:promptvars:sourcepath"
+declare -i BASHPID
+declare -A BASH_ALIASES=()
+declare -a BASH_ARGC=([0]="0")
+declare -a BASH_ARGV=()
+declare -- BASH_ARGV0
+declare -A BASH_CMDS=()
+declare -- BASH_COMMAND="declare -p"
+declare -a BASH_LINENO=()
+declare -a BASH_SOURCE=()
+declare -- BASH_SUBSHELL
+declare -ar BASH_VERSINFO=([0]="5" [1]="0" [2]="17" [3]="1" [4]="release" [5]="x86_64-pc-linux-gnu")
+declare -- BASH_VERSION="5.0.17(1)-release"
+declare -x CODEALLY_CURRENT_PROJECT_ID="6323fef1ba4b4061175547cd"
+declare -x CODEALLY_ENVIRONMENT="production"
+declare -x CODEALLY_IDLE_TIMEOUT="600000"
+declare -x CODEALLY_INIT_COMMAND="exit"
+declare -x CODEALLY_ORIGINAL_PROJECT_ID="6323fef1ba4b4061175547cd"
+declare -x CODEROAD_CONTENT_SECURITY_POLICY_EXEMPTIONS="sha256-O6s4HZqHNjMzg0UZUFHy0YEAlG05lWCXf0lBN+GmShk="
+declare -x CODEROAD_DISABLE_RUN_ON_SAVE="true"
+declare -x CODEROAD_SESSION_STORAGE_PATH="../../codeally/.local"
+declare -x CODEROAD_TUTORIAL_URL="https://raw.githubusercontent.com/freeCodeCamp/learn-bash-scripting-by-building-five-programs/main/tutorial.json"
+declare -x CODEROAD_WEBHOOK_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVG9rZW4iOiJ0NEhGanFpd3pMcjZYMjk3Q1JPMEJGN3lERzU4OU9Bc2NKd1luQkM5bDlCMW4ybmhKSHo4cnk0Z0hETGUwMkFGIiwiaWF0IjoxNjYzMzQ4OTY4fQ.0R8CLlaya_DBYq0XQCl6jltuJng0nQFZk9kkj1R5zxA"
+declare -x COLORTERM="truecolor"
+declare -- COLUMNS="150"
+declare -- COMP_WORDBREAKS
+declare -x DEBIAN_FRONTEND="noninteractive"
+declare -a DIRSTACK=()
+declare -- EPOCHREALTIME
+declare -- EPOCHSECONDS
+declare -ir EUID="1000"
+declare -a FUNCNAME
+declare -x GIT_ASKPASS="/usr/local/lib/vscode/extensions/git/dist/askpass.sh"
+declare -a GROUPS=()
+declare -i HISTCMD
+declare -- HISTFILE="/home/codeally/.bash_history"
+declare -- HISTFILESIZE="2000"
+declare -- HISTSIZE="1000"
+declare -x HOME="/home/codeally"
+declare -x HOSTNAME="a9eaefc81b19"
+declare -- HOSTTYPE="x86_64"
+declare -- IFS=" 
+"
+declare -x ITEM_URL="https://open-vsx.org/vscode/item"
+declare -x LANG="en_US.UTF-8"
+declare -i LINENO
+declare -- LINES="13"
+declare -x LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:"
+declare -- MACHTYPE="x86_64-pc-linux-gnu"
+declare -i MAILCHECK="60"
+declare -x NODE_OPTIONS="--max-old-space-size=2048 "
+declare -x NVM_CD_FLAGS=""
+declare -x NVM_DIR="/home/codeally/.nvm"
+declare -x NVM_RC_VERSION=""
+declare -x OLDPWD
+declare -- OPTERR="1"
+declare -i OPTIND="1"
+declare -- OSTYPE="linux-gnu"
+declare -x PATH="/home/codeally/.rbenv/bin:/home/codeally/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+declare -a PIPESTATUS=([0]="0")
+declare -ir PPID="64"
+declare -- PROMPT_COMMAND="echo \$PWD >> ~/project/.freeCodeCamp/test/.cwd; history -a"
+declare -- PS1="\\[\\e]0;\\u@\\h: \\w\\a\\]\${debian_chroot:+(\$debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\\$ "
+declare -- PS2="> "
+declare -- PS4="+ "
+declare -x PWD="/home/codeally/project"
+declare -i RANDOM
+declare -x RBENV_ROOT="/home/codeally/.rbenv"
+declare -- SECONDS
+declare -x SERVICE_URL="https://open-vsx.org/vscode/gallery"
+declare -x SHELL="/bin/bash"
+declare -r SHELLOPTS="braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor"
+declare -x SHLVL="1"
+declare -x TERM="xterm-256color"
+declare -x TERM_PROGRAM="vscode"
+declare -x TERM_PROGRAM_VERSION="1.57.1"
+declare -ir UID="1000"
+declare -x VSCODE_GIT_ASKPASS_MAIN="/usr/local/lib/vscode/extensions/git/dist/askpass-main.js"
+declare -x VSCODE_GIT_ASKPASS_NODE="/usr/local/lib/node"
+declare -x VSCODE_GIT_IPC_HANDLE="/tmp/vscode-git-dab47b0e3c.sock"
+declare -- _="-p"
+
+
+
+
+
+
+
+
+
+The RANDOM variable will generate a random number between 0 and 32767. You can use the modulus operator to make it in the range you want. In your script, change the NUMBER variable to $RANDOM%75.
+
+
+
+Bash sees everything as a string so it just printed the %75 part literally. In the terminal, create an I variable equal to 0 (zero), so you can play with it and figure out how to do some calculations.
+
+
+
+
+The double parenthesis performed the calculation, changing the value of I from 0 to 1. Enter help let in the terminal to see the operators you can use with the double parenthesis.
+
+
+
+codeally@a9eaefc81b19:~/project$ help let
+let: let arg [arg ...]
+    Evaluate arithmetic expressions.
+    
+    Evaluate each ARG as an arithmetic expression.  Evaluation is done in
+    fixed-width integers with no check for overflow, though division by 0
+    is trapped and flagged as an error.  The following list of operators is
+    grouped into levels of equal-precedence operators.  The levels are listed
+    in order of decreasing precedence.
+    
+        id++, id--      variable post-increment, post-decrement
+        ++id, --id      variable pre-increment, pre-decrement
+        -, +            unary minus, plus
+        !, ~            logical and bitwise negation
+        **              exponentiation
+        *, /, %         multiplication, division, remainder
+        +, -            addition, subtraction
+        <<, >>          left and right bitwise shifts
+        <=, >=, <, >    comparison
+        ==, !=          equality, inequality
+        &               bitwise AND
+        ^               bitwise XOR
+        |               bitwise OR
+        &&              logical AND
+        ||              logical OR
+        expr ? expr : expr
+                        conditional operator
+        =, *=, /=, %=,
+        +=, -=, <<=, >>=,
+        &=, ^=, |=      assignment
+    
+    Shell variables are allowed as operands.  The name of the variable
+    is replaced by its value (coerced to a fixed-width integer) within
+    an expression.  The variable need not have its integer attribute
+    turned on to be used in an expression.
+    
+    Operators are evaluated in order of precedence.  Sub-expressions in
+    parentheses are evaluated first and may override the precedence
+    rules above.
+    
+    Exit Status:
+    If the last ARG evaluates to 0, let returns 1; let returns 0 otherwise.
+
+
+You used several of these now, including in the for loop from the countdown timer. Enter (( I += 10 )) in the terminal to increment I by 10. Note that you don't need to prepend variables with $ inside these parenthesis.
+
+
+
+It should have printed 11 for the value of I. Using the double parenthesis like you have been is good for changing variable values or making comparisons. It makes the calculation in place and provides no output. If you want to make a calculation and do something with the result, add a $ in front like this: $(( ... )). Type $(( I + 4 )) in the terminal to see what happens.
+
+
+
+It should say, bash: 15: command not found. It replaced the command with the result of the calculation. Effectively, trying to run 15 as a command. Enter the same command, but put echo in front of it. The command was $(( I + 4 ))
+
+
+It should still have printed 11 for I. See the hints if it didn't. These double parenthesis with a $ are how you can assign a variable to some calculation. In the terminal, create a J variable, and use the $(( ... )) syntax to set its value to I - 6.
+
+
+
+So, as a reminder, (( ... )) will perform a calculation or operation and output nothing. $(( ... )) will replace the calculation with the result of it. You made a few variables in this shell, view them with declare -p.
+
+
+
+declare can be used to create variables, but you are just going to use it to view them for now. If you scroll up a little, you should find your I and J variables in there. View J with declare -p J.
+
+I saw RANDOM in that list, too. View it with declare -p <variable> like you did for J
+
+Okay, I think I finally know how to get the random number for the Bingo Number Generator. Use echo and RANDOM % 75 to print a random number in the terminal.
+
+One tiny problem, that calculation will give a number between 0 and 74. Enter the same command in the terminal, but add 1 to the calculation to get a random number between 1 and 75.
+
+
+
+if statements can have an "else if" area like this:
+
+if (( CONDITION ))
+then
+  STATEMENTS
+elif [[ CONDITION ]]
+then
+  STATEMENTS
+fi
+Using the double square brackets this time, add an elif condition that checks if the number variable is less than or equal to 30. If it is, use your two variables again to print The next number is, I:<number>
+
+
+
+#!/bin/bash
+# Bingo Number Generator
+echo -e "\n~~ Bingo Number Generator ~~\n"
+
+NUMBER=$(( RANDOM % 75 + 1 ))
+
+TEXT="The next number is, "
+
+if (( NUMBER <= 15 ))
+then echo $TEXT B:$NUMBER
+elif [[ $NUMBER -le 30 ]]
+then echo $TEXT I:$NUMBER
+elif (( NUMBER < 46))
+then echo $TEXT N:$NUMBER
+elif [[ $NUMBER -lt 61 ]]
+then echo $TEXT G:$NUMBER
+else echo $TEXT O:$NUMBER
+fi
+
+
+
+
+
+
+This program will have an array of responses. One will be printed randomly after a user inputs a question. Practice first 😄 In the terminal, create an array like this: ARR=("a" "b" "c")
+
+Each variable in the array is like any other variable, just combined into a single variable. In the terminal, print the second item in the array with echo ${ARR[1]}. Note that the first item would be index zero.
+
+
+If you recall, you were able to print all the arguments to your countdown.sh script with echo $*. echo $@ would have worked as well. Similarly, you can use the * or @ to print your whole array. In the terminal, use echo to print all the items in your array.
