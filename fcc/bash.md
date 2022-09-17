@@ -553,3 +553,142 @@ Each variable in the array is like any other variable, just combined into a sing
 
 
 If you recall, you were able to print all the arguments to your countdown.sh script with echo $*. echo $@ would have worked as well. Similarly, you can use the * or @ to print your whole array. In the terminal, use echo to print all the items in your array.
+$ echo ${ARR[@]}
+
+
+
+You will randomly print one of the values. In your script, create a variable named N. Set it equal to a random number between 0 and 5, the first and last index of the array.
+N=$(( RANDOM % 6 ))
+
+
+codeally@178939d76f62:~/project$ help function
+function: function name { COMMANDS ; } or name () { COMMANDS ; }
+    Define shell function.
+    
+    Create a shell function named NAME.  When invoked as a simple command,
+    NAME runs COMMANDs in the calling shell's context.  When NAME is invoked,
+    the arguments are passed to the function as $1...$n, and the function's
+    name is in $FUNCNAME.
+    
+    Exit Status:
+    Returns success unless NAME is readonly.
+
+
+
+It looks like you can create a function like this:
+
+FUNCTION_NAME() {
+  STATEMENTS
+}
+Add an empty function named GET_FORTUNE to your script. Make sure the response you are printing is the last thing in the script.
+
+
+Call your function by putting the name of it below where you create it. No $ needed. Make sure the response you are printing is at the bottom of the file.
+GET_FORTUNE(){
+  echo Ask a yes or no question:
+}
+GET_FORTUNE
+
+
+until: until COMMANDS; do COMMANDS; done
+    Execute commands as long as a test does not succeed.
+    
+    Expand and execute COMMANDS as long as the final command in the
+    `until' COMMANDS has an exit status which is not zero.
+    
+    Exit Status:
+    Returns the status of the last command executed.
+
+
+The until loop is very similar to the while loop you used. It will execute the loop until a condition is met. Here's an example:
+
+until [[ CONDITION ]]
+do
+  STATEMENTS
+done
+Add an until loop below your function. Use the double brackets to check if QUESTION is equal to test?. Move the GET_FORTUNE function call to the statements area of the loop. It should run the function until you input test? as the question.
+
+until [[ $QUESTION == test? ]]
+do
+GET_FORTUNE
+done
+
+
+
+False. An important operator in that menu is =~. It allows for pattern matching. Using the same syntax but with this operator, check if hello contains the pattern el.
+$ [[ hello =~ el ]]; echo $?
+
+
+Your patterns have been checking for literal matches, el and lo wor. You can use regular expression characters as well, but you can't put the pattern in quotes when you do. Using the same syntax, check if hello world starts with an h by using ^h as the pattern.
+$ [[ "hello world" =~ ^h ]]; echo $?
+
+Do it again, but use ^h.+d$ as the pattern to see if the string starts with an h, has at least one character after it, and ends with a d
+$ [[ "hello world" =~ ^h.+d$ ]]; echo $?
+
+Using the same syntax, check if your variable ends with ? by using the pattern \?$.
+$ [[ $VAR =~ \?$ ]]; echo $?
+
+
+
+Now, your function will print one thing if you pass it any argument, and something else if not. In the until loop, add again as an argument to where you call the function.
+
+
+#!/bin/bash
+
+# Program to tell a persons fortune
+
+echo -e "\n~~ Fortune Teller ~~\n"
+
+RESPONSES=("Yes" "No" "Maybe" "Outlook good" "Don't count on it" "Ask again later")
+N=$(( RANDOM % 6 ))
+
+GET_FORTUNE() {
+  
+  if [[ ! $1 ]]
+  then
+    echo Ask a yes or no question:
+  else
+    echo Try again. Make sure it ends with a question mark:
+  fi
+
+  read QUESTION
+}
+
+GET_FORTUNE
+
+until [[ $QUESTION =~ \?$ ]]
+do
+  GET_FORTUNE again
+done
+
+echo -e "\n${RESPONSES[$N]}"
+
+
+
+codeally@70dfbcd57415:~/project$ help type
+type: type [-afptP] name [name ...]
+    Display information about command type.
+    
+    For each NAME, indicate how it would be interpreted if used as a
+    command name.
+    
+    Options:
+      -a        display all locations containing an executable named NAME;
+                includes aliases, builtins, and functions, if and only if
+                the `-p' option is not also used
+      -f        suppress shell function lookup
+      -P        force a PATH search for each NAME, even if it is an alias,
+                builtin, or function, and returns the name of the disk file
+                that would be executed
+      -p        returns either the name of the disk file that would be executed,
+                or nothing if `type -t NAME' would not return `file'
+      -t        output a single word which is one of `alias', `keyword',
+                `function', `builtin', `file' or `', if NAME is an alias,
+                shell reserved word, shell function, shell builtin, disk file,
+                or not found, respectively
+    
+    Arguments:
+      NAME      Command name to be interpreted.
+    
+    Exit Status:
+    Returns success if all of the NAMEs are found; fails if any are not found.
