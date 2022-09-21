@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/socket.io/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p id="display">Welcome to <%= title %></p>
+    <input type="button" value="send" onclick="send()">
+    <input type="button" value="Disconnect" onclick="stop()">
+
+    <script>
+      // establish the connection to ws server
+      // to the origin host (localhost:3000)
+      const socket = io('localhost:3000');
+      // to another host:
+      // const socket = io('hostName')
+      // sent message to server
+
+      
+      // listener for 'response' message from server
+      // socket.on('response', msg=>console.log(msg))
+      socket.on('generalMessage', msg=>console.log(msg))
+      // socket.on('data', (data)=>{
+      //   console.log(data)
+      //   document.getElementById('display').innerText+=data
+      // })
+      socket.on('socketEmitter', msg=>console.log(msg))
+     
+      function send(){
+        socket.emit('messageName', 'Hey i am a new client')
+      }
+      function stop(){
+        socket.emit('stop', null)
+      }
+    </script>
+  </body>
+</html>
