@@ -3,7 +3,12 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('chat', { 
+    title: 'Chat Room 107',
+    nickName: req.query.nickName,
+    color: req.query.color,
+    msgArr:[]
+   });
 });
 
 module.exports = router;

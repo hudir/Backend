@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %> </title>
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.min.js"></script>
+  </head>
+  <body class="bg-dark" style="height: 100vh">
+    <h4 class="text-light text-center">Welcome <%=nickName %></h4>
+    <div class="container border">
+        <div class="row" style="height: 80vh;">
+            <div id="messages" style="height: 80vh;" class="border p-2 col-md-12 overflow-auto text-white mb-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                    <input type="text" id="message" class="form-control" placeholder="Type message">
+            </div>
+            <div class="col-md-2" >
+                <input type="submit" onclick="send(event)" class="form-control" value="Send">
+            </div>
+            <div class="col-md-4" >
+                <select name="" id="userSelect">
+                    <option value="all">ALL</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    
+        const socket = io('/?nickName=<%= nickName%>');
+
+        //get All users
+        socket.on('newUser', arr=>{
+            arr.forEach(x=>document.querySelector('#userSelect').innerHTML+=`<option value="${x}">${x}</option>`)
+        })
+
+
+        function send(){
+            // check if all selected
+            if(document.querySelector('#userSelect').value=='all') {
+                socket.emit('incomingMsg', {
+                nickName: '<%= nickName%>',
+                color: '<%= color%>',
+                msg: document.querySelector('#message').value
+                })
+                document.querySelector('#message').value=''
+            } else {
+                socket.emit('screctMsg', {
+                nickName: '<%= nickName%>',
+                color: '<%= color%>',
+                msg: document.querySelector('#message').value,
+                to: document.querySelector('#userSelect').value
+                })
+                document.querySelector('#message').value=''
+            }
+            
+        };
+        socket.on('updateChatList', data=>{
+            console.log(data)
+            document.getElementById('messages').innerHTML += `<p>
+                <strong style="color: ${data.color}">${data.nickName}</strong>: ${data.msg}
+            </p>`
+        });
+
+        // document.body.addEventListener('keyup', e=>{
+        //     if(e.key='Enter'){
+        //         socket.emit('incomingMsg', {
+        //         nickName: '<%= nickName%>',
+        //         color: '<%= color%>',
+        //         msg: document.querySelector('#message').value
+        //     })
+        //     document.querySelector('#message').value=''
+        //     } else document.querySelector('#message').value+=e.key
+          
+        // })
+    </script>
+
+  </body>
+</html>
