@@ -136,3 +136,60 @@ echo "~~ kitty_ipsum_1.txt info ~~" > kitty_info.txt
 
 
 Open the file so you can keep track of what's in it. Use echo and the -e flag with the new line character (\n) to append Number of lines: to the kitty_info.txt file. Add the new line character at the beginning of the text so there's an empty line. Remember that you can append output to a file with >>.
+
+
+
+You should be able to find out how many lines are in the kitty_ipsum_1.txt file and add that number to the kitty_info.txt file. Use the cat command to pipe the content of kitty_ipsum_1.txt as input for the wc command. Use the flag for getting the number of lines from that input and append the number to the kitty_info.txt file. Tip: enter the command without appending to see if it's working first.
+1. Here's an example: cat <filename> | wc <flag> >> <filename>
+
+2. The flag you want is -l
+
+3. You previously used cat kitty_ipsum_1.txt | wc
+
+4. Enter cat kitty_ipsum_1.txt | wc -l >> kitty_info.txt in the terminal
+
+
+
+Append the number of characters in kitty_ipsum_1.txt to kitty_info.txt. Use the redirection method as the input for the wc command this time instead of the piping method.
+wc -m < kitty_ipsum_1.txt >> kitty_info.txt 
+
+
+grep is a command for searching for patterns in text. You can use it like this: grep '<pattern>' <filename>. Use it to search for the pattern meow in the kitty_ipsum_1.txt file.
+$ grep 'meow' kitty_ipsum_1.txt 
+
+
+It showed you all the lines that contain meow somewhere in them, but it’s a little messy. View the manual of grep to see if you can find anything to help.
+grep, egrep, fgrep, rgrep - print lines that match patterns
+Pattern Syntax
+       -E, --extended-regexp
+              Interpret PATTERNS as extended regular expressions (EREs, see below).
+
+       -F, --fixed-strings
+              Interpret PATTERNS as fixed strings, not regular expressions.
+
+       -G, --basic-regexp
+              Interpret PATTERNS as basic regular expressions (BREs, see below).  This is the default.
+
+       -P, --perl-regexp
+              Interpret  PATTERNS  as  Perl-compatible regular expressions (PCREs).  This option is experimental when combined with the -z (--null-data) option, and grep -P
+              may warn of unimplemented features.
+
+
+That's a lot of options. Use grep to search for the meow pattern in the same file, but add that --color flag to see if it's a little more helpful.
+
+
+That’s better. Add the flag to show all the line numbers with the command.
+$ grep --color -n 'meow' kitty_ipsum_1.txt 
+
+
+It's showing the line number of each match it found. grep can use regular expressions, too. Enter the previous command, but change the pattern to meow[a-z]* to see all words that start with meow.
+
+$ grep --color -n 'meow[a-z]*' kitty_ipsum_1.txt 
+
+It looks like seven, but how can you get a count of that from the command line to append to the info file for the next piece of information? grep has a -c flag to give you a count. Enter the last command but use that instead of the --color flag.
+
+
+That gave you a count of the number lines that the pattern occurred on. Check the manual of grep to see if there's a way to find a count of all the words matched.
+
+
+It doesn't look like that's an option. But there is a -o flag that will says it will put the matches on their own lines. Try that one with that command instead of the -c flag.
