@@ -193,3 +193,83 @@ That gave you a count of the number lines that the pattern occurred on. Check th
 
 
 It doesn't look like that's an option. But there is a -o flag that will says it will put the matches on their own lines. Try that one with that command instead of the -c flag.
+$ grep -o 'meow[a-z]*' kitty_ipsum_1.txt 
+
+
+
+That gave you each match on it's own line. You can use the wc command again to get a count of the lines to find out how many matches there are. Pipe the output of the last command into the wc command and use the flag for showing the line count.
+$ grep -o 'meow[a-z]*' kitty_ipsum_1.txt | wc -l
+
+
+
+Awesome. wc counted the lines in the output of the grep. That should be the count for how many times those words appear. Enter the same command but append the number to the kitty_info.txt file.
+$ grep -o 'meow[a-z]*' kitty_ipsum_1.txt | wc -l >> kitty_info.txt
+
+
+There was a -n flag with grep to get line numbers. Use it to check the kitty_ipsum_1.txt file for the meow[a-z]* pattern again.
+
+
+
+There doesn't appear to be a way to just get the line numbers. There's a sed command for replacing text that might work. First, some practice. Use cat to print the name.txt file in the terminal. It should still say freeCodeCamp.
+
+
+sed can replace text like this: sed 's/<pattern_to_replace>/<text_to_replace_it_with>/' <filename>. By default, it won't replace the text in the file. It will output it to stdout. Use it to replace r with 2 in the name.txt file and the output prints to the terminal.
+3. Enter sed 's/r/2/' name.txt in the terminal
+ sed 's/free/f233/' name.txt 
+
+ $ sed 's/freecodecamp/f233C0d3C@mp/' name.txt 
+
+
+
+
+Nothing was replaced that time. It didn't find the freecodecamp text you tried to replace because the case of a few letters didn't match. You can add regex flags after the last / in the sed argument. A g, for global, would replace all instances of a matched pattern, or an i to ignore the case of the pattern. Enter the same command but add the correct regex flag to ignore the case.
+$ sed 's/freecodecamp/f233C0d3C@mp/i' name.txt 
+
+
+It worked that time since it wasn't required to match the case. As with any command, the input can be redirected. Use the same sed replacement and file but redirect the input this time.
+
+$ sed 's/freecodecamp/f233C0d3C@mp/i' < name.txt
+
+
+
+The method of input didn't affect the output. Use the cat and pipe method this time to set the input for the sed command, replacing the same text.
+
+$ cat name.txt | sed 's/freecodecamp/f233C0d3C@mp/i'
+
+Back to the task at hand. You want to add the line numbers asked for in the kitty_info.txt file. Use grep with the flag to show line numbers to find the meow[a-z]* pattern in the kitty_ipsum_1.txt file again.
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt 
+
+
+
+You can use sed to each line in that output with just the line numbers. Start by entering the last command and pipe the output into sed that replaces [0-9] with 1.
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed 's/[0-9]/1/'
+
+
+That matched the first digit it found on each line and replaced it with 1. Enter the same command but change the matching pattern to [0-9]+ to match one or more numbers.
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed 's/[0-9]+/1/'
+
+
+
+DESCRIPTION
+       Sed is a stream editor.  A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline).  While in some ways sim‐
+       ilar to an editor which permits scripted edits (such as ed), sed works by making only one pass over the input(s), and is consequently  more  efficient.   But  it  is
+       sed's ability to filter text in a pipeline which particularly distinguishes it from other types of editors.
+
+Looks like there's a lot of options with sed as well. There's a flag to use extended regular expressions. Add it to that previous command that didn't work so it recognizes the + in your pattern. The previous command was grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed 's/[0-9]+/1/'.
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed -r 's/[0-9]+/1/'
+
+
+It worked that time. It replaced all the numbers at the start with a 1. Next, you will use a capture group in the regex to capture the numbers so you can use them in the replacement area. Enter the same command but use s/([0-9]+)/\1/ with sed to capture the numbers at the start. It will replace them with themselves for now.
+
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed -r 's/([0-9]+)/\1/'
+
+That matched all the numbers and replaced them with the same numbers. All you need to do is match everything else on each line and replace it with only the numbers. Add .* at the end of the sed matching pattern so it matches everything, captures the numbers, and replaces everything with the captured numbers.
+
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed -r 's/([0-9]+).*/\1/'
+
+
+There's your list of numbers for the kitty_info.txt file. Enter the same command and append the list of numbers to it.
+$ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed -r 's/([0-9]+).*/\1/' >> kitty_info.txt 
+
+
+Take a look at the file. Hopefully it doesn't look too messy. You can reset a lesson at any time if it doesn't look right, or if you accidentally change something in one of the other files. There's one more group of words to find info on for this file. Use grep with the --color flag to see all the words that start with cat in the same file. Use a similar pattern that you used to find words starting with meow.
