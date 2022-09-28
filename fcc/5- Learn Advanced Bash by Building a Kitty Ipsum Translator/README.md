@@ -273,3 +273,90 @@ $ grep -n 'meow[a-z]*' kitty_ipsum_1.txt | sed -r 's/([0-9]+).*/\1/' >> kitty_in
 
 
 Take a look at the file. Hopefully it doesn't look too messy. You can reset a lesson at any time if it doesn't look right, or if you accidentally change something in one of the other files. There's one more group of words to find info on for this file. Use grep with the --color flag to see all the words that start with cat in the same file. Use a similar pattern that you used to find words starting with meow.
+
+$ grep --color 'cat[a-z]*' kitty_ipsum_1.txt 
+
+
+You will want to find the number of times those words appear again. First, use grep with the correct flag to put all the matches of the cat[a-z]* pattern on their own line.
+
+$ grep -o 'cat[a-z]*' kitty_ipsum_1.txt 
+
+Enter the same command and pipe the output into the command that outputs the count of those lines.
+
+$ grep -o 'cat[a-z]*' kitty_ipsum_1.txt | wc -l
+
+
+The process to add the lines to the file will be the same as you did before. Start by using grep to match the cat words in the file and showing the line numbers with the output.
+$ grep -n 'cat[a-z]*' kitty_ipsum_1.txt 
+
+
+
+That shows you the line numbers and text. You will have to use sed again to extract only the line numbers. Pipe the output of the last command into sed to do that. As a reminder, the sed pattern was 's/([0-9]+).*/\1/'.
+$ grep -n 'cat[a-z]*' kitty_ipsum_1.txt | sed -r 's/([0-9]+).*/\1/'
+
+
+Use cat with the pipe method to append the info to the kitty_info.txt file that it is asking for.
+
+$ cat kitty_ipsum_2.txt | wc -l >> kitty_info.txt 
+
+Number of words:
+$ wc -w < kitty_ipsum_2.txt >> kitty_info.txt 
+
+Number of characters:
+$ wc -m < kitty_ipsum_2.txt >> kitty_info.txt
+
+Lines that they appear on:
+$ grep -n 'meow[a-z]*' kitty_ipsum_2.txt | sed -r 's/([0-9]+).*/\1/' >> kitty_info.txt 
+
+Number of times cat, cats, or catnip appears:
+$ grep -o 'cat[a-z]*' kitty_ipsum_2.txt | wc -l >> kitty_info.txt 
+
+
+The script will take a file as input that can be passed as an argument or read from stdin. Below the shebang, use cat to print the content of the first argument passed to the script.
+
+
+$ echo 'cat $1' >> translate.sh 
+$ ./translate.sh kitty_ipsum_1.txt 
+
+
+Looks like that is working. Try the cat and pipe method.
+
+1. Here's and example cat <filename> | <command>
+
+2. Use cat to set the content of kitty_ipsum_1.txt as input for your script
+
+3. Enter cat kitty_ipsum_1.txt | ./translate.sh in the terminal
+
+
+It didn't output anything, so it must be replacing all the instances of catnip. You can replace many patterns using sed like this: sed 's/<pattern_1>/<replacement_1>/; s/<pattern_2>/<replacement_2>/'. Note that you need the semi-colon between the two replacement patterns and they both need to be wrapped in the quotes. In your script, add another pattern to the sed command that replaces cat with dog.
+
+$ ./translate.sh  kitty_ipsum_1.txt | grep --color 'dog[a-z]*'
+
+
+#!/bin/bash
+cat $1 | sed 's/catnip/dogchow/; s/cat/dog/; s/meow/woof/' 
+
+$ ./translate.sh  kitty_ipsum_1.txt | grep --color 'dog[a-z]*|woof[a-z]*'
+
+$ ./translate.sh  kitty_ipsum_1.txt | grep --color -E 'dog[a-z]*|woof[a-z]*'
+
+
+If you look closely, you can see that the meow part of meowzer on that one line didn't get replaced with woof. grep only matched the first instance of meow it found on that line. Add the "global" regex flag to all three patterns of the sed command in your script so it will replace all instances of any of the words.
+
+1. Here's an example of one pattern: s/<pattern>/<replacement>/<regex_flags>
+
+2. It's the g flag
+
+3. Your translate.sh file should look like this:
+
+#!/bin/bash
+
+cat $1 | sed 's/catnip/dogchow/g; s/cat/dog/g; s/meow/woof/g'
+
+
+
+cat <filename>| sed -r 's/catnip/dogchow/g; s/cat/dog/g; s/meow|meowzer/woof/g' | grep --color -E 'meow[a-z]*|cat[a-z]*'
+
+
+
+It looks good 👍 diff is a command to view the difference between two files. You can use it like this: diff <file_1> <file_2>. Use it to view the difference between the kitty_ipsum_1 and doggy_ipsum_1 files.
