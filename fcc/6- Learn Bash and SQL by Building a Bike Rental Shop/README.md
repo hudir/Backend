@@ -133,4 +133,4 @@ So that pattern will match any positive integers. You want to check if the input
 3. Enter [[ ! 11 =~ ^[0-9]+$ ]]; echo $? in the terminal
 
 
-. Be sure to use single quotes around VARCHAR values
+Be sure to use single quotes around VARCHAR values
