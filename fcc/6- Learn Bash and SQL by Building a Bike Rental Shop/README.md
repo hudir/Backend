@@ -36,7 +36,21 @@ bikes=> UPDATE bikes SET available=FALSE
 
 UPDATE bikes SET available=true WHERE type!='BMX';
 
+bikes=> SELECT * FROM bikes ORDER BY bike_id;
 
+bikes=> SELECT * FROM bikes LEFT JOIN rentals USING (bike_id);
+
+SELECT * FROM bikes INNER JOIN rentals USING (bike_id);
+
+bikes=> SELECT * FROM bikes INNER JOIN rentals USING (bike_id) INNER JOIN customers USING(customer_id);
+
+bikes=> SELECT * FROM bikes INNER JOIN rentals USING (bike_id) INNER JOIN customers USING(customer_id) WHERE phone='555-5555' AND date_returned IS NULL;
+
+bikes=> SELECT bike_id, type, size FROM bikes INNER JOIN rentals USING (bike_id) INNER JOIN customers USING(customer_id) WHERE phone='555-5555' AND date_returned IS NULL;
+
+bikes=> SELECT bike_id, type, size FROM bikes INNER JOIN rentals USING (bike_id) INNER JOIN customers USING(customer_id) WHERE phone='555-5555' AND date_returned IS NULL ORDER BY bike_id;
+
+bikes=> SELECT * FROM rentals INNER JOIN customers USING (customer_id) WHERE phone='555-5555' AND bike_id=1 AND date_returned IS NULL;
 
 # bash part 
 
@@ -134,3 +148,66 @@ So that pattern will match any positive integers. You want to check if the input
 
 
 Be sure to use single quotes around VARCHAR values
+
+
+It should have printed 28 | Mountain. The message you want to print after someone rents a bike would have said I have put you down for the 28" Mountain Bike, Me.. You need to format that variable for the message. The sed command can be used to replace characters and patterns in text. It looks like this: sed s/<regex_pattern_to_replace>/<characters_to_replace_with>/<regex_flags>. In the terminal, enter echo '28 | Mountain' | sed 's/ /=/g' to practice.
+
+
+The g regex flag stands for "global". It will replace all instance of the pattern. In this case, it replaced all the spaces. Enter the same command but without that flag.
+
+That time, only the first instance of the pattern was replaced. The first space was removed. Enter the same command, but replace the first instance of  | (<space>|) with nothing.
+
+Enter the same command, but make the output look like how you want in the message, 28" Mountain.
+$ echo '28 | Mountain' | sed 's/ |/"/'
+
+
+
+Now it is formatted for the message. Take that echo command and the part that formats it, put it in a sub shell, and set the output into a variable named BIKE_INFO_FORMATTED. Here's an example: BIKE_INFO_FORMATTED=$(<formatted info here>)
+BIKE_INFO_FORMATTED=$(echo $BIKE_INFO | sed 's/ |/"/')
+
+
+What you put the in subshell ($(...)) will be executed, and the result of it will replace the subshell. In this case, the formatted bike info was printed when you ran the script before, so the BIKE_INFO_FORMATTED variable will be set to that. Below the send to main menu comment, send users to the main menu with a message that would print I have put you down for the 28" Mountain Bike, Me. if Me rented the 28 inch Mountain Bike.
+
+
+
+
+It printed, but you can only assume there's a space at the end. Place the last command in a subshell with quotes around it. Put a period right after the subshell and echo the whole thing in the terminal. Here's how it looks: echo "$(echo ' M e ')."
+
+$ echo "$(echo ' M e ')."
+
+Now you can be certain there's a space at the end. Within the subshell of the last command, use a pipe and the sed command to replace the first space with no space. Here's the sed replacement pattern you want: 's/ //'.
+
+1. The previous command was echo "$(echo ' M e ')."
+
+2. Here's an example of how the subshell should look: $(echo ' M e ' | sed <pattern>)
+
+3. This is the exact subshell: $(echo ' M e ' | sed <pattern>)
+
+4. Enter echo "$(echo ' M e ' | sed 's/ //')." in the terminal
+
+
+
+
+That replaced all the spaces. You only had an extra space at the beginning of the customer name. Add a ^ in front of the space in the replacement pattern of the last command to only replace a space at the beginning of the text.
+
+$ echo "$(echo ' M e ' | sed 's/^ //g' )."
+
+
+The ^  (^<space>) pattern only replaced the first space. Add * at the end of the matching pattern to replace all spaces at the beginning of text.
+
+
+
+The customer name only had an extra space at the beginning. Unsure as to why, but there may be others with extra spaces at the end as well. You can match the end of text with $. Change the matching pattern of the last command so it replaces a single space at the end. The pattern is  $ (<space>$).
+$ echo "$(echo '   M e ' | sed 's/ $//g' )."
+
+
+The pattern only replaces a single space at the end. Change the last command so it replaces all spaces at the end of the text.
+$ echo "$(echo '   M e   ' | sed 's/ *$//g' ).
+
+
+That replaced all the spaces at the end of the text. You can use | as an "or" operator in a matching pattern to replace one pattern or another. Use it to change the matching pattern so it would replace any amount of spaces at the beginning and any amount of spaces at the end of the text.
+That didn't work. It doesn't like that "or" (|) operator for some reason. Check the manual of the sed command to see if you can find anything.
+Somewhere in there is a flag for using extended regular expressions with sed. That might work. Add it to the echo "$(echo '   M e   ' | sed 's/^ *| *$//g')." command that didn't work to find out.
+
+$ echo "$(echo '   M e   ' | sed -r 's/^ *| *$//g' )."
+M e.
